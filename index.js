@@ -7,6 +7,17 @@ let flag = 0;
 var level = 0;
 var started = false;
 var dislevel = document.querySelector(".level");
+var prev = document.querySelector(".prev");
+var highest = 0;
+if (localStorage) {
+  if (localStorage.simonHi) highest = localStorage.simonHi;
+  else {
+    localStorage.setItem("simonHi", 0);
+  }
+} else {
+  // No support. Use a fallback such as browser cookies or store on the server.
+}
+prev.innerHTML = "HI : " + highest;
 dislevel.addEventListener("click", function () {
   if (dislevel.innerHTML == "Start") $(".refresh").click();
 });
@@ -76,6 +87,13 @@ function check() {
       }
     } else {
       dislevel.innerHTML = "Start";
+      if (level > highest) {
+        highest = level;
+        if (localStorage) {
+          localStorage.setItem("simonHi", level);
+        }
+      }
+      prev.innerHTML = "HI : " + highest + " |  Prev : " + level;
       level = 0;
       playSound("wrong");
       arrclick = [];
